@@ -3,7 +3,7 @@ contractions
 transformers
 pandas
 numpy
-tensorflow
+tensorflow==2.12.0
 torch
 streamlit
 python-dotenv
