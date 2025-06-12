@@ -1,0 +1,6 @@
+
+google-api-python-client
+contractions
+transformers
+streamlit
+gradio
