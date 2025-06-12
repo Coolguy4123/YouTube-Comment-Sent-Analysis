@@ -1,6 +1,10 @@
-
 google-api-python-client
 contractions
 transformers
+pandas
+numpy
+tensorflow
+torch
 streamlit
+python-dotenv
 gradio
