@@ -90,3 +90,4 @@ if st.button("Fetch and Analyze Comments"):
                 st.markdown(f"💬 **{r['comment']}**")
                 st.write(f"→ Sentiment: **{r['sentiment']}** (Confidence: {r['confidence']:.2f})")
                 st.markdown("---")
+                
