@@ -1,2 +1,44 @@
-.venv
+# Python / uv
+.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# uv cache & lock artifacts
+.uv/
+uv-cache/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb~
+
+
+# Environment / secrets
 .env
+
+
+# ML artifacts / models
+roberta_web_model/
+*.h5
+*.pt
+*.bin
+*.ckpt
+*.onnx
+
+# Data / outputs
+*.csv
+*.tsv
+*.parquet
+*.pkl
+*.joblib
+
+# Streamlit
+.streamlit/
+.streamlit/secrets.toml
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
