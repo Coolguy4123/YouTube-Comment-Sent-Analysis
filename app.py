@@ -6,10 +6,17 @@ import numpy as np
 import re
 from dotenv import load_dotenv
 import os
+import pandas as pd
 
 # === Your YouTube Data API key ===
 load_dotenv()
-YOUTUBE_API_KEY = os.getenv("API_KEY")  # Or replace with string for testing
+YOUTUBE_API_KEY = st.secrets.get("API_KEY") or os.getenv("API_KEY")
+if not YOUTUBE_API_KEY:
+    st.error("Missing API_KEY. Add it in Streamlit Cloud → Manage app → Secrets.")
+    st.stop()
+
+# Build YouTube client
+youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY, cache_discovery=False)
 
 # === Load your fine-tuned model ===
 @st.cache_resource
@@ -22,12 +29,11 @@ model, tokenizer = load_model_and_tokenizer()
 
 # === Utility: Extract video ID from URL ===
 def extract_video_id(url):
-    match = re.search(r"(?:v=|\/)([0-9A-Za-z_-]{11})", url)
+    match = re.search(r"(?:v=|youtu\.be/|shorts/|embed/)([0-9A-Za-z_-]{11})", url)
     return match.group(1) if match else None
 
 # === Fetch comments from YouTube API ===
 def fetch_comments(video_id, max_comments=1000):
-    youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
     comments = []
     request = youtube.commentThreads().list(
         part="snippet",
@@ -86,8 +92,16 @@ if st.button("Fetch and Analyze Comments"):
                 results = predict_sentiment(comments)
 
             st.write("### 💡 Results:")
-            for r in results:
-                st.markdown(f"💬 **{r['comment']}**")
-                st.write(f"→ Sentiment: **{r['sentiment']}** (Confidence: {r['confidence']:.2f})")
-                st.markdown("---")
+
+            df = pd.DataFrame(results)
+            st.dataframe(df, use_container_width=True)
+
+            # Small summary
+            st.write(df["sentiment"].value_counts(normalize=True).rename("share").mul(100).round(1))
+
+            # Showing every comments individually is too slow
+            # for r in results:
+            #     st.markdown(f"💬 **{r['comment']}**")
+            #     st.write(f"→ Sentiment: **{r['sentiment']}** (Confidence: {r['confidence']:.2f})")
+            #     st.markdown("---")
                 
