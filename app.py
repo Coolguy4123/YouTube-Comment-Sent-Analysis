@@ -10,7 +10,8 @@ import pandas as pd
 
 # === Your YouTube Data API key ===
 load_dotenv()
-YOUTUBE_API_KEY = st.secrets.get("API_KEY") or os.getenv("API_KEY")
+# st.secrets.get("API_KEY") or 
+YOUTUBE_API_KEY = os.getenv("API_KEY")
 if not YOUTUBE_API_KEY:
     st.error("Missing API_KEY. Add it in Streamlit Cloud → Manage app → Secrets.")
     st.stop()
